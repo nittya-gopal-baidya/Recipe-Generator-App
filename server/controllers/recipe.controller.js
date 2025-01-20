@@ -31,7 +31,7 @@ export const getRecipes = async (req, res) => {
     const recipes = await Recipe.find(queryConditions);
     res.json(recipes);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching recipes' });
+    res.status(500).json({ error: 'Error fetching recipes'});
   }
 };
 
@@ -67,3 +67,19 @@ export const createRecipe = async (req, res) => {
     res.status(500).json({ error: 'Error creating recipe' });
   }
 };
+
+  export const getRecipeById =async (req, res) => {
+  try {
+    const { recipeIds } = req.body;
+
+    // Fetch recipes with IDs in the provided array
+    const recipes = await Recipe.find({ _id: { $in: recipeIds } });
+
+    res.status(200).json(recipes);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch recipes" });
+  }
+};
+
+
+

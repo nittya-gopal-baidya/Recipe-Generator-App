@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
+import toast from "react-hot-toast";
 const HomePage = () => {
   const [ingredients, setIngredients] = useState("");
   const [isVegetarian, setIsVegetarian] = useState(false);
@@ -26,13 +27,15 @@ const HomePage = () => {
   };
 
   const handleAddToFavorites = async (recipeId) => {
+    console.log(recipeId);
     try {
       await axios.post(
-        `http://localhost:3000/api/favorites`,
-        { recipeId },
-        { withCredentials: true }
+        `http://localhost:3000/api/users/favorites`,
+        { recipeId }
       );
-      alert("Recipe added to favorites!");
+    //   alert("Recipe added to favorites!");
+    toast.success("Recipe added to favorites!");
+
     } catch (error) {
       console.error("Error adding to favorites:", error);
     }
@@ -55,7 +58,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       <header className="w-full flex justify-between items-center bg-blue-600 text-white p-4 rounded-lg shadow-md">
-        <h1 className="text-xl font-bold">Recipe Finder</h1>
+        <h1 className="text-xl font-bold">🧑🏻‍🍳</h1>
         <div>
           <button
             onClick={handleProfile}
@@ -140,9 +143,17 @@ const HomePage = () => {
                       
                     }
                   </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-bold">Difficulty: </span>
+                    {recipe.difficulty}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-bold">Cooking Time: </span>
+                    {recipe.cookingTime} min
+                  </p>
 
                   <button
-                    onClick={() => handleAddToFavorites(recipe.id)}
+                    onClick={() => handleAddToFavorites(recipe._id)}
                     className="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                   >
                     Add to Favorite

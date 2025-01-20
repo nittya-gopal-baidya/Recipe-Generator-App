@@ -23,11 +23,11 @@ const RegisterPage = () => {
   };
   return (
     <div
-      className="max-w-md w-full bg-gray-400 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl 
+      className="max-w-md w-full bg-blue-300 bg-opacity-90 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl 
 			overflow-hidden"
     >
       <div className="p-8">
-        <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-yellow-500 text-transparent bg-clip-text">
+        <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-white to-white text-transparent bg-clip-text">
           Create Account
         </h2>
 
@@ -55,10 +55,10 @@ const RegisterPage = () => {
           />
           {error && <p className="text-red-500 font-semibold mt-2">{error}</p>}
           <button
-            className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-green-600 to-white-600 text-white 
-						font-bold rounded-lg shadow-lg hover:from-blue-600
-						hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-						 focus:ring-offset-gray-900 transition duration-200"
+            className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-white to-white text-blue-500 
+                      font-bold rounded-lg shadow-lg hover:from-gray-200
+                      hover:to-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                       focus:ring-offset-blue-100 transition duration-200"
             type="submit"
             disabled={isLoading}
           >
@@ -70,10 +70,10 @@ const RegisterPage = () => {
           </button>
         </form>
       </div>
-      <div className="px-8 py-4 bg-gray-900 bg-opacity-50 flex justify-center">
-        <p className="text-sm text-gray-400">
+      <div className="px-8 py-4 bg-blue-800 bg-opacity-20 flex justify-center">
+        <p className="text-sm text-black">
           Already have an account?{" "}
-          <Link to={"/login"} className="text-blue-400 hover:underline">
+          <Link to={"/login"} className="text-blue-800 hover:underline">
             Login
           </Link>
         </p>
