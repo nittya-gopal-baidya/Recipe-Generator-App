@@ -1,38 +1,48 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 const HomePage = () => {
-  const [ingredients, setIngredients] = useState('');
+  const [ingredients, setIngredients] = useState("");
   const [isVegetarian, setIsVegetarian] = useState(false);
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const navigate = useNavigate();
-  const { logout} = useAuthStore();
+  const { logout } = useAuthStore();
   const handleSearch = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/recipes', {
-        params: {
-          ingredients: ingredients.split(',').map((item) => item.trim()),
+      const response = await axios.post(
+        "http://localhost:3000/api/recipes/getRecipe",
+        {
+          ingredients: ingredients.split(",").map((item) => item.trim()),
           vegetarian: isVegetarian,
           glutenFree: isGlutenFree,
-        },
-      });
+        } // Pass the data here
+      );
       setRecipes(response.data);
     } catch (error) {
-      console.error('Error fetching recipes:', error);
+      console.error("Error fetching recipes:", error);
     }
   };
 
   const handleAddToFavorites = async (recipeId) => {
     try {
-      await axios.post(`http://localhost:3000/api/favorites`, { recipeId }, { withCredentials: true });
-      alert('Recipe added to favorites!');
+      await axios.post(
+        `http://localhost:3000/api/favorites`,
+        { recipeId },
+        { withCredentials: true }
+      );
+      alert("Recipe added to favorites!");
     } catch (error) {
-      console.error('Error adding to favorites:', error);
+      console.error("Error adding to favorites:", error);
     }
   };
-  const handleLogout =async (e)=>{
+  const handleProfile = (e) => {
+    e.preventDefault();
+
+    navigate("/profile");
+  };
+  const handleLogout = async (e) => {
     e.preventDefault();
     try {
       await logout();
@@ -40,8 +50,7 @@ const HomePage = () => {
     } catch (error) {
       console.log(error);
     }
-  }
-  
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
@@ -49,7 +58,7 @@ const HomePage = () => {
         <h1 className="text-xl font-bold">Recipe Finder</h1>
         <div>
           <button
-            onClick={() => navigate('/profile')}
+            onClick={handleProfile}
             className="mr-4 bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-200"
           >
             Profile
@@ -111,7 +120,21 @@ const HomePage = () => {
                   className="border p-4 rounded-lg shadow hover:shadow-md transition"
                 >
                   <h3 className="text-md font-bold">{recipe.name}</h3>
-                  <p className="text-sm text-gray-600">{recipe.description}</p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-bold">Ingredients: </span>
+                    {recipe.ingredients.join(", ")}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-bold">Instructions: </span>
+                    {recipe.instructions.map((instruction, index) => (
+                      <li key={index}>{instruction}</li>
+                    ))}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-bold">Ingredients: </span>
+                    {recipe.ingredients.join(", ")}
+                  </p>
+
                   <button
                     onClick={() => handleAddToFavorites(recipe.id)}
                     className="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
@@ -122,7 +145,9 @@ const HomePage = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-600">No recipes found. Try searching with different ingredients.</p>
+            <p className="text-gray-600">
+              No recipes found. Try searching with different ingredients.
+            </p>
           )}
         </div>
       </main>

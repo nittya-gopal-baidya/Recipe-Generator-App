@@ -2,6 +2,7 @@ import { Routes, Route, Navigate,BrowserRouter } from "react-router-dom";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
@@ -62,6 +63,14 @@ function App() {
               <RedirectAuthenticatedUser>
                 <LoginPage />
               </RedirectAuthenticatedUser>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectRoute>
+                <ProfilePage />
+              </ProtectRoute>
             }
           />
           <Route path="*" element={<Navigate to="/" replace />} />
