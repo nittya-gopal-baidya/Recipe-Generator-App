@@ -10,10 +10,11 @@ const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
   const navigate = useNavigate();
   const { logout } = useAuthStore();
+  const API_URL = import.meta.env.MODE==="development"?"http://localhost:3000":"";
   const handleSearch = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/recipes/getRecipe",
+        `${API_URL}/api/recipes/getRecipe`,
         {
           ingredients: ingredients.split(",").map((item) => item.trim()),
           vegetarian: isVegetarian,
@@ -30,7 +31,7 @@ const HomePage = () => {
     console.log(recipeId);
     try {
       await axios.post(
-        `http://localhost:3000/api/users/favorites`,
+        `${API_URL}/api/users/favorites`,
         { recipeId }
       );
     //   alert("Recipe added to favorites!");
@@ -58,7 +59,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       <header className="w-full flex justify-between items-center bg-blue-600 text-white p-4 rounded-lg shadow-md">
-        <h1 className="text-xl font-bold">🧑🏻‍🍳</h1>
+        <h1 className="text-xl font-bold">🧑🏻‍🍳 InstaRecipes</h1>
         <div>
           <button
             onClick={handleProfile}

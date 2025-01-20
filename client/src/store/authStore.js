@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import axios from "axios";
 // import { addFavorite } from "../../../server/controllers/user.controller";
-const API_URL = "http://localhost:3000";
-// const API_URL = import.meta.env.MODE==="development"?"http://localhost:3000/api/auth":"/api/auth";
+// const API_URL = "http://localhost:3000";
+const API_URL = import.meta.env.MODE==="development"?"http://localhost:3000":"";
 axios.defaults.withCredentials = true;
 export const useAuthStore = create((set) => ({
   user: null,
