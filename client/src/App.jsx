@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate,BrowserRouter } from "react-router-dom";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
@@ -37,7 +37,8 @@ function App() {
   if (isCheckingAuth) return <LoadingSpinner />;
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 to-emerald-700 flex items-center justify-center relative overflow-hidden">
+      <BrowserRouter>
+      <div className="min-h-screen bg-gradient-to-br from-white-900 to-emerald-700 flex items-center justify-center relative overflow-hidden">
         <Routes>
           <Route
             path="/"
@@ -67,6 +68,7 @@ function App() {
         </Routes>
         <Toaster />
       </div>
+      </BrowserRouter>
     </>
   );
 }
