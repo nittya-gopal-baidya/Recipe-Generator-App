@@ -131,8 +131,14 @@ const HomePage = () => {
                     ))}
                   </p>
                   <p className="text-sm text-gray-600">
-                    <span className="font-bold">Ingredients: </span>
-                    {recipe.ingredients.join(", ")}
+                    <span className="font-bold">Nutritional Information: </span>
+                    {<>
+                      <li >Calories: {recipe.nutrition.calories}</li>
+                      <li >Protein: {recipe.nutrition.protein}</li>
+                      <li >Fat: {recipe.nutrition.fat}</li>
+                      <li >Carbs: {recipe.nutrition.carbs}</li></>
+                      
+                    }
                   </p>
 
                   <button
