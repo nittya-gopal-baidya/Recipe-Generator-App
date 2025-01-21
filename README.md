@@ -53,7 +53,7 @@ Contributions are welcome! Please follow these steps to contribute:
 
 ## Contact
 - **GitHub:** [nittya-gopal-baidya](https://github.com/nittya-gopal-baidya)
-- 
+  
 ## Live URL
 https://recipe-generator-app-swxf.onrender.com/
 
