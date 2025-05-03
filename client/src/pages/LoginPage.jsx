@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { User, Mail, Lock, Loader } from 'lucide-react';
+import { Mail, Lock, Loader } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import toast from 'react-hot-toast';
@@ -24,55 +24,69 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      className="max-w-md bg-white bg-opacity-90 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl 
-    overflow-hidden"
-    >
-      <div className="p-8 bg-blue-300 rounded-xl w-96">
-        <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-white to-blue-200 text-transparent bg-clip-text">
-          Login Yourself
-        </h2>
-        <form onSubmit={handleLogin}>
-          <Input
-            icon={Mail}
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            icon={Lock}
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+    <div className="relative w-screen h-screen overflow-hidden">
+      {/* 🎥 Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover"
+      >
+        <source src="/videoplayback.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-          {error && <p className="text-red-500 font-semibold mt-2">{error}</p>}
+      {/* 🧊 Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
 
-          <button
-            className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-white to-white text-blue-500 
-                      font-bold rounded-lg shadow-lg hover:from-gray-200
-                      hover:to-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                       focus:ring-offset-blue-100 transition duration-200"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <Loader className="animate-spin mx-auto" size={24} />
-            ) : (
-              "Login"
-            )}
-          </button>
-        </form>
-      </div>
-      <div className="px-8 py-4 bg-blue-800 bg-opacity-20 flex justify-center">
-        <p className="text-sm text-black">
-          Don't have an account?{" "}
-          <Link to={"/register"} className="text-blue-800 hover:underline">
-            Register
-          </Link>
-        </p>
+      {/* 💳 Login Card */}
+      <div className="relative z-20 flex items-center justify-center h-full">
+        <div className="max-w-md w-full bg-white bg-opacity-90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden">
+          <div className="p-8 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-t-3xl">
+            <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-white to-yellow-100 text-transparent bg-clip-text">
+              Welcome Back!
+            </h2>
+            <form onSubmit={handleLogin}>
+              <Input
+                icon={Mail}
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                icon={Lock}
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              {error && <p className="text-red-600 font-semibold mt-3 text-center">{error}</p>}
+
+              <button
+                className="mt-6 w-full py-3 px-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-bold rounded-lg shadow-md hover:from-green-700 hover:to-green-800 transition duration-200"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Loader className="animate-spin mx-auto" size={24} />
+                ) : (
+                  "Login"
+                )}
+              </button>
+            </form>
+          </div>
+          <div className="px-8 py-4 bg-white bg-opacity-70 flex justify-center rounded-b-3xl">
+            <p className="text-sm text-gray-800">
+              Don't have an account?{" "}
+              <Link to={"/register"} className="text-orange-700 hover:underline font-semibold">
+                Register
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

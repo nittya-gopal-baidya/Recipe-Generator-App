@@ -47,6 +47,7 @@ message:null,
       set({ error: null, isCheckingAuth: false, isAuthenticated: false });
     }
   },
+
   login:async(email,password)=>{
     set({ isLoading: true, error: null });
     try {
@@ -58,13 +59,20 @@ message:null,
       });
       return response.data;
     } catch (error) {
+      const errorMessage = error.response.data.message || "Access denied. Please log in with an authorized account";
       set({
-        error: error.response.data.message || "Error logging in",
+        error: errorMessage,
         isLoading: false,
       });
-      throw error;
+      // Set a timer to clear the error message after 2 seconds
+      setTimeout(() => {
+        set({ error: null });
+      }, 3000); // 3000 milliseconds = 2 seconds
+      throw error; // Re-throw the error so the calling component can handle it if needed
     }
   },
+
+
   logout: async () => {
     set({ isLoading: true, error: null });
     try {

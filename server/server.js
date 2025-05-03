@@ -1,14 +1,17 @@
 
-import express  from'express';
-import { connectDB } from "./db/connectDB.js";
-import dotenv  from'dotenv';
-import cors  from'cors';
+import express  from 'express';
+
+import dotenv  from 'dotenv';
+import cors  from 'cors';
 import cookieParser from "cookie-parser";
-import recipeRoutes  from'./routes/recipe.routes.js';
-import userRoutes  from'./routes/user.routes.js';
+import recipeRoutes  from './routes/recipe.routes.js';
+import userRoutes  from './routes/user.routes.js';
 import path from 'path'
 // Load environment variables
-dotenv.config();
+// dotenv.config();
+dotenv.config({ path: '../.env' });
+import { connectDB } from "./db/connectDB.js";
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
