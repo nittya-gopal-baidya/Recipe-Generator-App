@@ -96,3 +96,27 @@ export const checkAuth=async(req,res)=>{
   
   }
 }
+
+//Remove Favorite 
+export const removeFavorite = async (req, res) => {
+  const { userId, recipeId } = req.body;
+  if (!userId || !recipeId) {
+    return res.status(400).json({ message: 'Missing userId or recipeId' });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Filter out the recipeId
+    user.favorites = user.favorites.filter(
+      (favId) => favId.toString() !== recipeId
+    );
+    await user.save();
+
+    res.json({ message: 'Removed from favorites', favorites: user.favorites });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
