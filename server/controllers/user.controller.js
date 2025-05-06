@@ -1,6 +1,7 @@
 import User from '../model/User.js';
 import bcrypt from 'bcrypt';
 import { generateTokenAndSetCookie } from '../utils/generateTokenAndSetCookie.js';
+import Favorite from '../model/Favorite.js';
 
 // Register a new user
 export const registerUser = async (req, res) => {
@@ -57,22 +58,103 @@ export const loginUser = async (req, res) => {
 };
 
 // Add a recipe to favorites
+// export const addFavorite = async (req, res) => {
+//   //const { userId } = req.userId; // Assuming middleware extracts user from token
+//   const { recipeId } = req.body;
+// console.log("reciped id:",recipeId)
+//   try {
+//     const user = await User.findById(req.userId);
+//     console.log(user)
+//     if (!user) return res.status(404).json({ error: 'User not found' });
+
+//     user.favorites.push(recipeId);
+//     await user.save();
+//     res.json({ message: 'Recipe added to favorites' });
+//   } catch (error) {
+//     res.status(500).json({ error: 'Error adding favorite recipe' });
+//   }
+// };
+
+
+// export const addFavorite = async (req, res) => {
+//   const { recipe } = req.body; // Expecting the full recipe object in the request body
+
+//   try {
+//     const user = await User.findById(req.userId);
+//     if (!user) return res.status(404).json({ error: 'User not found' });
+
+//     // Create a new favorite entry
+//     const favorite = new Favorite({
+//       userId: req.userId,
+//       recipe,
+//     });
+
+//     await favorite.save();
+//     res.json({ message: 'Recipe added to favorites', favorite });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Error adding favorite recipe' });
+//   }
+// };
+
+// export const addFavorite = async (req, res) => {
+//   const { recipe } = req.body; // Expecting the full recipe object in the request body
+
+//   // Validate the recipe object
+//   if (!recipe || !recipe.name || !recipe.ingredients || !recipe.instructions) {
+//     //  console.log(recipe ? recipe : 'Recipe object is missing or incomplete');
+//     return res.status(400).json({ error: 'Invalid recipe object. Ensure all required fields are provided.' });
+//   }
+
+//   try {
+//     const user = await User.findById(req.userId);
+//     if (!user) return res.status(404).json({ error: 'User not found' });
+
+//     // Create a new favorite entry
+//     const favorite = new Favorite({
+//       userId: req.userId,
+//       recipe,
+//     });
+
+//     await favorite.save();
+//     res.json({ message: 'Recipe added to favorites', favorite });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Error adding favorite recipe' });
+//   }
+// };
+
 export const addFavorite = async (req, res) => {
-  //const { userId } = req.userId; // Assuming middleware extracts user from token
-  const { recipeId } = req.body;
-console.log("reciped id:",recipeId)
+  const  recipe  = req.body; // Expecting the full recipe object in the request body
+  // const  recipe2  = req.body; // Expecting the full recipe object in the request body
+
+  // Log the incoming request body for debugging
+  // console.log("Request body:", req.body);
+  // console.log("Nittya:",recipe2.ingredients)
+  // Validate the recipe object
+  if (!recipe || !recipe.name || !recipe.ingredients || !recipe.instructions) {
+    // console.log("Invalid recipe object:", recipe);
+    return res.status(400).json({ error: 'Invalid recipe object. Ensure all required fields are provided.' });
+  }
+
   try {
     const user = await User.findById(req.userId);
-    console.log(user)
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    user.favorites.push(recipeId);
-    await user.save();
-    res.json({ message: 'Recipe added to favorites' });
+    // Create a new favorite entry
+    const favorite = new Favorite({
+      userId: req.userId,
+      recipe,
+    });
+
+    await favorite.save();
+    res.json({ message: 'Recipe added to favorites', favorite });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error adding favorite recipe' });
   }
 };
+
 export const logoutUser = async (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ success: true, message: "Logged out successfully" });
