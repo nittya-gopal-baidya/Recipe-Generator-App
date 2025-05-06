@@ -235,7 +235,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
 
-  const API_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "";
+  const API_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://insta-recipe-2o65vxvwe-nittyas-projects.vercel.app";
 
   const handleSearch = async () => {
     setLoading(true); // Start loading

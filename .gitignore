@@ -26,3 +26,5 @@ FileStructure
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 const API_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:3000" : "";
+  import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://insta-recipe-2o65vxvwe-nittyas-projects.vercel.app";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
