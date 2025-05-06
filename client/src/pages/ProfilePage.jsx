@@ -13,19 +13,35 @@ const ProfilePage = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
 
 
+  // useEffect(() => {
+  //   const fetchAllFavorites = async () => {
+  //     try {
+  //       const response = await axios.get(`${API_URL}/api/users/favorites`);
+  //       setFavoriteRecipes(response.data); // Update state with fetched favorites
+  //     } catch (error) {
+  //       console.error("Error fetching all favorites:", error);
+  //     }
+  //   };
+
+  //   fetchAllFavorites(); // Fetch all favorites on component mount
+  // }, []);
   useEffect(() => {
     const fetchAllFavorites = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/users/favorites`);
-        setFavoriteRecipes(response.data); // Update state with fetched favorites
+        const response = await axios.get(`${API_URL}/api/users/favorites`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        setFavoriteRecipes(response.data);
       } catch (error) {
         console.error("Error fetching all favorites:", error);
+        toast.error("Failed to fetch favorite recipes.");
       }
     };
-
-    fetchAllFavorites(); // Fetch all favorites on component mount
+  
+    fetchAllFavorites();
   }, []);
-
   const handleBack = () => {
     navigate("/");
   };

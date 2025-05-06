@@ -61,7 +61,8 @@ function App() {
             path="/login"
             element={
               <RedirectAuthenticatedUser>
-                <LoginPage />
+              <LoginPage />
+               
               </RedirectAuthenticatedUser>
             }
           />

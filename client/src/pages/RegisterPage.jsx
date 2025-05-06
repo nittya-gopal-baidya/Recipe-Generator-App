@@ -17,7 +17,7 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       await register(email, password, username);
-      navigate("/");
+      navigate("/login");
       toast.success("User registered successfully");
     } catch (error) {
       console.log(error);

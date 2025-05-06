@@ -21,7 +21,7 @@ message:null,
       });
       set({
         user: response.data.user,
-        isAuthenticated: true,
+        // isAuthenticated: true,
         isLoading: false,
       });
     } catch (error) {
