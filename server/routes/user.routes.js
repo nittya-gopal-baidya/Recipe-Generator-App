@@ -2,6 +2,7 @@ import express from 'express';
 import { registerUser, loginUser, addFavorite,logoutUser, checkAuth } from '../controllers/user.controller.js';
 import {authMiddleware} from '../middleware/authMiddleware.js';
 import { removeFavorite } from '../controllers/user.controller.js';
+import { getAllFavorites } from '../controllers/user.controller.js';
 const router = express.Router();
 
 router.post('/register', registerUser);
@@ -10,4 +11,5 @@ router.post('/favorites', authMiddleware, addFavorite);
 router.post('/logout',logoutUser);
 router.post('/check-auth',authMiddleware,checkAuth);
 router.post('/removeFavorite', removeFavorite);
+router.get('/favorites', getAllFavorites); // Add this route
 export default router;

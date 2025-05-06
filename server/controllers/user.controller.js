@@ -57,81 +57,10 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// Add a recipe to favorites
-// export const addFavorite = async (req, res) => {
-//   //const { userId } = req.userId; // Assuming middleware extracts user from token
-//   const { recipeId } = req.body;
-// console.log("reciped id:",recipeId)
-//   try {
-//     const user = await User.findById(req.userId);
-//     console.log(user)
-//     if (!user) return res.status(404).json({ error: 'User not found' });
-
-//     user.favorites.push(recipeId);
-//     await user.save();
-//     res.json({ message: 'Recipe added to favorites' });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Error adding favorite recipe' });
-//   }
-// };
-
-
-// export const addFavorite = async (req, res) => {
-//   const { recipe } = req.body; // Expecting the full recipe object in the request body
-
-//   try {
-//     const user = await User.findById(req.userId);
-//     if (!user) return res.status(404).json({ error: 'User not found' });
-
-//     // Create a new favorite entry
-//     const favorite = new Favorite({
-//       userId: req.userId,
-//       recipe,
-//     });
-
-//     await favorite.save();
-//     res.json({ message: 'Recipe added to favorites', favorite });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Error adding favorite recipe' });
-//   }
-// };
-
-// export const addFavorite = async (req, res) => {
-//   const { recipe } = req.body; // Expecting the full recipe object in the request body
-
-//   // Validate the recipe object
-//   if (!recipe || !recipe.name || !recipe.ingredients || !recipe.instructions) {
-//     //  console.log(recipe ? recipe : 'Recipe object is missing or incomplete');
-//     return res.status(400).json({ error: 'Invalid recipe object. Ensure all required fields are provided.' });
-//   }
-
-//   try {
-//     const user = await User.findById(req.userId);
-//     if (!user) return res.status(404).json({ error: 'User not found' });
-
-//     // Create a new favorite entry
-//     const favorite = new Favorite({
-//       userId: req.userId,
-//       recipe,
-//     });
-
-//     await favorite.save();
-//     res.json({ message: 'Recipe added to favorites', favorite });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Error adding favorite recipe' });
-//   }
-// };
 
 export const addFavorite = async (req, res) => {
   const  recipe  = req.body; // Expecting the full recipe object in the request body
-  // const  recipe2  = req.body; // Expecting the full recipe object in the request body
 
-  // Log the incoming request body for debugging
-  // console.log("Request body:", req.body);
-  // console.log("Nittya:",recipe2.ingredients)
-  // Validate the recipe object
   if (!recipe || !recipe.name || !recipe.ingredients || !recipe.instructions) {
     // console.log("Invalid recipe object:", recipe);
     return res.status(400).json({ error: 'Invalid recipe object. Ensure all required fields are provided.' });
@@ -179,26 +108,27 @@ export const checkAuth=async(req,res)=>{
   }
 }
 
-//Remove Favorite 
 export const removeFavorite = async (req, res) => {
-  const { userId, recipeId } = req.body;
-  if (!userId || !recipeId) {
-    return res.status(400).json({ message: 'Missing userId or recipeId' });
+  const { favoriteId } = req.body;
+  if (!favoriteId) {
+    return res.status(400).json({ message: 'Missing favoriteId' });
   }
 
   try {
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    // Filter out the recipeId
-    user.favorites = user.favorites.filter(
-      (favId) => favId.toString() !== recipeId
-    );
-    await user.save();
-
-    res.json({ message: 'Removed from favorites', favorites: user.favorites });
+    await Favorite.findByIdAndDelete(favoriteId); // Remove the favorite by ID
+    res.json({ message: 'Removed from favorites' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+export const getAllFavorites = async (req, res) => {
+  try {
+    // Fetch all favorite recipes from the "Favorite" collection
+    const favorites = await Favorite.find().populate('userId', 'username email'); // Populate user details if needed
+    res.status(200).json(favorites);
+  } catch (error) {
+    console.error("Error fetching favorites:", error);
+    res.status(500).json({ error: "Failed to fetch favorites" });
   }
 };

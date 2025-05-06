@@ -1,47 +1,44 @@
-
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "";
+const API_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:3000" : "";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
 
+
   useEffect(() => {
-    const fetchFavoriteRecipes = async () => {
+    const fetchAllFavorites = async () => {
       try {
-        const response = await axios.post(`${API_URL}/api/recipes/getRecipeById`, {
-          recipeIds: user.favorites,
-        });
-        setFavoriteRecipes(response.data);
+        const response = await axios.get(`${API_URL}/api/users/favorites`);
+        setFavoriteRecipes(response.data); // Update state with fetched favorites
       } catch (error) {
-        console.error("Error fetching favorite recipes:", error);
+        console.error("Error fetching all favorites:", error);
       }
     };
 
-    if (user.favorites && user.favorites.length > 0) {
-      fetchFavoriteRecipes();
-    }
-  }, [user.favorites]);
+    fetchAllFavorites(); // Fetch all favorites on component mount
+  }, []);
 
   const handleBack = () => {
     navigate("/");
   };
 
-  const handleRemove = async (recipeId) => {
+  
+  const handleRemove = async (favoriteId) => {
     try {
       await axios.post(`${API_URL}/api/users/removeFavorite`, {
-        userId: user._id,
-        recipeId,
+        favoriteId, // Pass the favorite ID to the backend
       });
-
+  
       // Update local state
-      setFavoriteRecipes((prev) => prev.filter((r) => r._id.toString() !== recipeId));
+      setFavoriteRecipes((prev) => prev.filter((fav) => fav._id !== favoriteId));
       toast.success("Removed from favorites");
     } catch (err) {
       console.error(err);
@@ -52,17 +49,21 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 flex items-center justify-center p-4">
       <div className="flex h-[90vh] max-w-6xl w-full bg-white bg-opacity-80 backdrop-blur-lg rounded-3xl shadow-xl border border-yellow-200 overflow-hidden animate-fadeInUp">
-
         {/* Profile Column (Left) */}
         <div className="w-1/3 flex flex-col items-center justify-center p-6 bg-white bg-opacity-90 backdrop-blur-md border-r border-yellow-300">
           <div>
-            <h2 className="text-3xl font-extrabold text-orange-600 text-center mb-6">👤 Profile Information</h2>
+            <h2 className="text-3xl font-extrabold text-orange-600 text-center mb-6">
+              👤 Profile Information
+            </h2>
             <div className="ml-8">
-            <p className="text-lg font-semibold text-gray-800">Name: {user.username}</p>
-            <p className="text-md font-medium text-gray-700">Email: {user.email}</p>
-         
+              <p className="text-lg font-semibold text-gray-800">
+                Name: {user.username}
+              </p>
+              <p className="text-md font-medium text-gray-700">
+                Email: {user.email}
+              </p>
             </div>
-             </div>
+          </div>
 
           <button
             onClick={handleBack}
@@ -72,24 +73,29 @@ const ProfilePage = () => {
           </button>
         </div>
 
-        {/* Recipe Column (Right) */}
+
         <div className="w-2/3 h-full overflow-y-auto p-6 sticky top-0">
-          <h3 className="text-2xl font-bold text-orange-700 mb-4 text-center">❤️ Favorite Recipes</h3>
+          <h3 className="text-2xl font-bold text-orange-700 mb-4 text-center">
+            ❤️ Favorite Recipes
+          </h3>
           {favoriteRecipes.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {favoriteRecipes.map((recipe) => (
+              {favoriteRecipes.map((favorite) => (
                 <div
-                  key={recipe._id}
+                  key={favorite._id}
                   className="bg-white bg-opacity-90 border border-orange-200 p-4 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]"
                 >
-                  <h4 className="text-lg font-bold text-pink-700 mb-2">{recipe.name}</h4>
+                  <h4 className="text-lg font-bold text-pink-700 mb-2">
+                    {favorite.recipe.name}
+                  </h4>
                   <p className="text-sm text-gray-700 mb-2">
-                    <strong>Ingredients:</strong> {recipe.ingredients.join(", ")}
+                    <strong>Ingredients:</strong>{" "}
+                    {favorite.recipe.ingredients.join(", ")}
                   </p>
                   <p className="text-sm text-gray-700 mb-2">
                     <strong>Instructions:</strong>
                     <ul className="list-disc pl-5">
-                      {recipe.instructions.map((step, idx) => (
+                      {favorite.recipe.instructions.map((step, idx) => (
                         <li key={idx}>{step}</li>
                       ))}
                     </ul>
@@ -97,14 +103,14 @@ const ProfilePage = () => {
                   <p className="text-sm text-gray-700">
                     <strong>Nutritional Info:</strong>
                     <ul className="list-disc pl-5">
-                      <li>Calories: {recipe.nutrition.calories}</li>
-                      <li>Protein: {recipe.nutrition.protein}</li>
-                      <li>Fat: {recipe.nutrition.fat}</li>
-                      <li>Carbs: {recipe.nutrition.carbs}</li>
+                      <li>Calories: {favorite.recipe.nutrition.calories}</li>
+                      <li>Protein: {favorite.recipe.nutrition.protein}</li>
+                      <li>Fat: {favorite.recipe.nutrition.fat}</li>
+                      <li>Carbs: {favorite.recipe.nutrition.carbs}</li>
                     </ul>
                   </p>
                   <button
-                    onClick={() => handleRemove(recipe._id.toString())}
+                    onClick={() => handleRemove(favorite._id)}
                     className="mt-2 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition"
                   >
                     Remove
