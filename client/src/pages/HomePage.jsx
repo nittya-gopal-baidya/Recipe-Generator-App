@@ -236,7 +236,9 @@ const HomePage = () => {
   const { logout } = useAuthStore();
 
   // const API_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://insta-recipe-2o65vxvwe-nittyas-projects.vercel.app";
-  const API_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://recipes-generator-m4cwa1epp-nittyas-projects.vercel.app";
+  // const API_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://recipes-generator-one.vercel.app/";
+  const API_URL = 'https://recipes-generator-one.vercel.app';
+  
   const handleSearch = async () => {
     setLoading(true); // Start loading
     try {

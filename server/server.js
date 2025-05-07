@@ -56,10 +56,18 @@ dotenv.config({ path: '../.env' });
 const app = express();
 const __dirname = path.resolve();
 
+// app.use(
+//   cors({
+//     origin: process.env.NODE_ENV === 'production' ? 'https://recipes-generator-frontend.vercel.app/' : 'http://localhost:5173',
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production' ? 'https://your-frontend-url.vercel.app' : 'http://localhost:5173',
+    origin: process.env.NODE_ENV === 'production' ? 'https://recipes-generator-frontend.vercel.app' : 'http://localhost:5173',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
   })
 );
 app.use(express.json());
