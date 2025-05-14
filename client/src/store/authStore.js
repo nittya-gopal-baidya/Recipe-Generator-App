@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import axios from "axios";
 // import { addFavorite } from "../../../server/controllers/user.controller";
-const API_URL = 'https://recipes-generator-one.vercel.app';
-// const API_URL = import.meta.env.MODE==="development"?"http://localhost:3000":"https://recipes-generator-one.vercel.app/";
+// const API_URL = 'https://recipes-generator-one.vercel.app';
+const API_URL = import.meta.env.MODE==="development"?"http://localhost:3000":"https://recipes-generator-one.vercel.app/";
 axios.defaults.withCredentials = true;
 export const useAuthStore = create((set) => ({
   user: null,

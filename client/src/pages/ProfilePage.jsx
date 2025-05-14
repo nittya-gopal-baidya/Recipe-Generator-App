@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-// const API_URL =import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://insta-recipe-2o65vxvwe-nittyas-projects.vercel.app";
-const API_URL = 'https://recipes-generator-one.vercel.app';
+const API_URL ="http://localhost:3000";
+// const API_URL = 'https://recipes-generator-one.vercel.app';
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
